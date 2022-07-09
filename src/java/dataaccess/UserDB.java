@@ -1,9 +1,5 @@
 package dataaccess;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -52,37 +48,33 @@ public class UserDB {
     }
 
     public void update(User user) throws Exception {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement statement = null;
-        String sql = "UPDATE user SET active=?, first_name=?, last_name=?, password=?, role=? WHERE email=?";
+     EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();   
         try {
-            statement = connection.prepareStatement(sql);
-            statement.setBoolean(1, user.getActive());
-            statement.setString(2, user.getFirstName());
-            statement.setString(3, user.getLastName());
-            statement.setString(4, user.getPassword());
-            statement.setInt(5, user.getRole().getId());
-            statement.setString(6, user.getEmail());
-            statement.executeUpdate();
+            trans.begin();
+            em.merge(user);
+            trans.commit();
+        }catch(Exception e){
+           trans.rollback();
         } finally {
-            DBUtil.closePreparedStatement(statement);
-            pool.freeConnection(connection);
+            em.close();
         }
     }
 
     public void delete(User user) throws Exception {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement statement = null;
-        String sql = "DELETE FROM user WHERE email=?";
+       EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
         try {
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, user.getEmail());
-            statement.executeUpdate();
+           Role role = user.getRole();
+           role.getUserList().remove(user);
+           trans.begin();
+           em.remove(em.merge(user));
+           em.merge(role);
+           trans.commit();
+        }catch(Exception e){
+               trans.rollback();
         } finally {
-            DBUtil.closePreparedStatement(statement);
-            pool.freeConnection(connection);
+            em.close();
         }
     }
 }
