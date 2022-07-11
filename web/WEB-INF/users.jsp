@@ -1,8 +1,3 @@
-<%-- 
-    Document   : users
-    Created on : Oct 27, 2020, 9:17:28 AM
-    Author     : 584893
---%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -20,20 +15,16 @@
             .grid-item {
                 margin: 15px;
             }
-
             .grid-item > h3 {
                 /*                text-align: center;*/
             }
-
             table {
                 width: 100%;
             }
-
             input, select {
                 width: 100%;
                 margin-bottom: 8px;
             }
-
             #messageBox {
                 color: red;
                 text-align: center;
@@ -50,38 +41,29 @@
                 -webkit-box-shadow: 4px 4px 11px 2px #ccc; 
                 -moz-box-shadow:    4px 4px 11px 2px #ccc; 
                 box-shadow:         4px 4px 11px 2px #ccc;  
-
             }
-
             @keyframes messageDropdown {
                 0% {top: -300px;}
                 10% {top: 50px;}
                 90% {top: 50px;}
                 100% {top: -300px;}
             }
-
-
             .usersTable {
                 font-family: Arial, Helvetica, sans-serif;
                 border-collapse: collapse;
                 width: 100%;
             }
-
             .usersTable td, .usersTable th {
                 border: 1px solid #ddd;
                 padding: 8px;
             }
-
             .usersTable tr:nth-child(even){background-color: #f2f2f2;}
-
             .usersTable tr:hover {background-color: #ddd;}
-
             .usersTable th {
                 padding-top: 12px;
                 padding-bottom: 12px;
                 text-align: left;
             }
-
             input[type=text], input[type=email], input[type=password], select {
                 width: 100%;
                 padding: 12px 20px;
@@ -91,7 +73,6 @@
                 border-radius: 4px;
                 box-sizing: border-box;
             }
-
             input[type=submit] {
                 width: 100%;
                 background-color: #4CAF50;
@@ -102,18 +83,14 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
-
             input[type=submit]:hover {
                 background-color: #45a049;
             }
-
             .formContainer {
                 border-radius: 5px;
                 background-color: #f2f2f2;
                 padding: 20px;
             }
-
-
         </style>
     </head>
     <body>
@@ -165,7 +142,7 @@
                             <td>${user.email}</td>
                             <td>${user.firstName}</td>
                             <td>${user.lastName}</td>
-                            <td>${user.role.name}</td>
+                            <td>${user.role.roleName}</td>
                             
                             <c:url value="users" var="editurl">
                             <c:param name="action" value="edit"/>
@@ -195,9 +172,9 @@
                         <input type="hidden" name="email" value="${editUser.email}" />
                         <input type="hidden" name="action" value="update" />
                         <select name="role">
-                            <option value="1" <c:if test="${editUser.role.id == 1}">selected</c:if>>System Admin</option>
-                            <option value="2" <c:if test="${editUser.role.id == 2}">selected</c:if>>Regular User</option>
-                            <option value="3" <c:if test="${editUser.role.id == 3}">selected</c:if>>Company Admin</option>
+                            <option value="1" <c:if test="${editUser.role.roleId == 1}">selected</c:if>>System Admin</option>
+                            <option value="2" <c:if test="${editUser.role.roleId == 2}">selected</c:if>>Regular User</option>
+                            <option value="3" <c:if test="${editUser.role.roleId == 3}">selected</c:if>>Company Admin</option>
                         </select>
                         <br>
                         <input type="submit" value="Update" />
